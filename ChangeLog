@@ -1,0 +1,7 @@
+2020-01-20 r2 Jan Zwiegers <jan@radicalsystems.co.za>
+	* Fix serialport power on startup, /etc/profile.d/default.sh
+
+2020-01-10 r1 Jan Zwiegers <jan@radicalsystems.co.za>
+	* First release adapted
+
+

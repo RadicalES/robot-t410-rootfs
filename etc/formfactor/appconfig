@@ -1,0 +1,15 @@
+# Robot-T410 Application Settings                                               
+# (C) 2019-2020, Radical Electronic Systems                                         
+# http://www.radicalsystems.co.za info@radicalsystems.co.za                    
+
+
+# Web Browser Settings                                                                                                                   
+WB_LOAD_URL=http://www.radicalsystems.co.za 
+
+# Serial Port Websocket Settings
+SERWS_SVR_ENABLED=true
+SERWS_SVR_SPORT=/dev/ttyS2
+SERWS_SVR_WPORT=8000
+SERWS_SVR_FOREIGN=false
+SERWS_SVR_BAUD=115200
+

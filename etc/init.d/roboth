@@ -1,0 +1,109 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Robot HTTP Daemon Service
+# Description:       Robot HTTP Daemon Service 
+### END INIT INFO
+
+# (C) 2015-2020, Radical Electronic Systems
+# Author:
+# Jan Zwiegers, jan@radicalsystems.co.za
+#
+
+# set -e
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="Robot HTTP server"
+NAME=roboth
+
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/$NAME
+DAEMON=/home/root/RobotHttp/httpRobot
+DAEMON_ARGS=/home/root/RobotHttp
+CHUID=root
+
+# source function library
+. /etc/init.d/functions
+
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+   return $(start-stop-daemon -S --chuid $CHUID -q --background --pidfile $PIDFILE --make-pidfile --exec $DAEMON -- $DAEMON_ARGS)
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+
+   status=$(start-stop-daemon -K -q --pidfile $PIDFILE --exec $DAEMON) 
+   # Many daemons don't delete their pidfiles when they exit.
+   rm -f $PIDFILE
+   return $status
+}
+
+#
+# Function that sends a SIGHUP to the daemon/service
+#
+do_reload() {
+   start-stop-daemon -K -q --signal 1 --quiet --pidfile $PIDFILE --name $NAME
+   return 0
+}
+
+case "$1" in
+  start)
+   echo -e -n "Starting $DESC: "
+   do_start
+   case "$?" in
+	  0) echo -e "${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}" ;;
+	  1) echo -e "${BRACKET}[${WARNING} RUNNING ${BRACKET}]${NORMAL}" ;;
+	  2) echo -e "${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}" ;;
+	  *) echo -e "${BRACKET}[${FAILURE} FAIL = $? ${BRACKET}]${NORMAL}" ;;
+   esac
+   ;;
+
+  stop)
+   echo -e -n "Stopping $DESC: "
+   do_stop
+   case "$?" in
+	  0|1) echo -e "${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}" ;;
+	  2) echo -e "${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}" ;;
+   esac
+   ;;
+
+  restart|force-reload)
+
+   echo -e -n "Restarting $DESC"
+   do_stop
+   case "$?" in
+	 0|1)
+	  do_start
+	  case "$?" in
+		 0) echo -e "${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}" ;;
+		 1) echo -e "${BRACKET}[${WARNING} RUNNING ${BRACKET}]${NORMAL}" ;; # Old process is still running
+		 *) echo -e "${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}" ;;
+	  esac
+	  ;;
+	 *)
+		# Failed to stop
+	  echo failure
+	  ;;
+   esac
+   ;;
+  *)
+   
+   echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+   exit 3
+   ;;
+esac
+
+:

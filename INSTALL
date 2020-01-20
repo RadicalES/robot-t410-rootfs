@@ -1,0 +1,14 @@
+ROBOT T410 Additional Root Files System Files
+---------------------------------------------
+1. To install simply copy to remote Robot File System.
+   Only copy the directories /etc /home /usr.
+   This will match the remote file system.
+2. Execute instructions in /etc/init.d/setup.txt to link startup daemons.
+   This is only done on a fresh install
+3. install.bat can be used on Windows to automate the copy process
+
+
+
+
+
+

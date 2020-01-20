@@ -1,0 +1,6 @@
+update-rc.d robotb defaults 99
+update-rc.d roboth defaults 99
+update-rc.d robotws defaults 99
+updatte-rc.d hostpad remove
+groupadd kvm
+
